@@ -16,14 +16,11 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
-# Load environment variables from .env
 load_dotenv()
+api_key = os.getenv("GENAI_API_KEY")
 
-# Read key from .env
-api_key = os.getenv("GEMINI_API_KEY")
-
-# Configure Gemini
 genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 
@@ -131,6 +128,17 @@ plt.title('Random Forest: Predicted vs Actual RUL')
 
 
 #FIX API 
-model = genai.GenerativeModel("gemini-1.5-flash")
-response = model.generate_content("Hello!")
+# Replace the Gemini API section
+
+prompt = """
+Based on realistic maintenance data for jet engines, estimate:
+1. Average cost of unexpected failure (in USD)
+2. Average cost of early maintenance (in USD)
+3. Reasonable maintenance threshold (in % of predicted RUL)
+Please give short numeric results only.
+"""
+
+response = model.generate_content(prompt)
+
+print("=== Gemini Output ===")
 print(response.text)
